@@ -4,10 +4,13 @@ const cors = require('cors');
 
 app.use(cors()); // Permite que o servidor aceite requisições de outros domínios
 app.use(express.json()); //Indica que o servidor vai receber JSON
+app.use(express.static('public')); 
+require("./db/conn.js"); 
 
-app.use(express.static('public')); // Indica que o servidor vai servir arquivos estáticos da pasta public
 
-const port = process.env.PORT || 3000; // Define a porta do servidor, se não estiver definida, usa a porta 3000
+const port = 3000; 
+const memoryRoutes = require('./routes');
+app.use('/memories', memoryRoutes); // Define a rota base para as rotas de memória
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
