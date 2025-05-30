@@ -1,17 +1,16 @@
-const { get } = require('mongoose');
 const Memory = require('../models/Memory');
-const { route } = require('../routes');
+const path = require('path');
 
 const fs = require('fs');
-const removeOldImage = (memory) => {
-    const imagePath = path.join(__dirname, '../public', memory.image); 
-    fs.unlink(imagePath, (err) => {
-        if (err) {
-            console.log("Erro ao remover imagem antiga:", err);
-        } else {
-            console.log("Imagem antiga removida com sucesso");
-        }
-    });
+const removeOldImage = async (memory) => {
+    try {
+        const imagePath = path.join(__dirname, '../public', memory.image);
+        console.log("Deletando imagem:", imagePath);
+        await fs.promises.unlink(imagePath);
+        console.log("Imagem antiga removida com sucesso");
+    } catch (err) {
+        console.log("Erro ao remover imagem antiga:", err);
+    }
 };
 const createMemory = async (req, res) => {
     try {
@@ -63,19 +62,99 @@ const getMemoryById = async (req, res) => {
 
 const deleteMemory = async (req, res) => {
     try {
-        const memory = await Memory.findByIdAndRemove(req.params.id);
+        const memory = await Memory.findByIdAndDelete(req.params.id);
         if (!memory) {
             return res.status(404).json({ message: "Memória não encontrada" });
         }
-        removeOldImage(memory);
+
+        await removeOldImage(memory);
+
         res.status(200).json({ message: "Memória deletada com sucesso" });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: "Erro ao deletar memória", error });
+        res.status(500).json({ message: "Erro ao deletar memória", error: error.message || error });
+    }
+}
+
+const updateMemory = async (req, res) => {
+    try {
+        const { title, description } = req.body;
+        let src = null
+        if (req.file) {
+            src = `images/${req.file.filename}`;
+        }
+        const memory = await Memory.findById(req.params.id);
+        console.log("ID recebido para update:", req.params.id);
+
+        if (!memory) {
+            return res.status(404).json({ message: "Memória não encontrada" });
+        }
+        if (src) {
+            removeOldImage(memory);
+        }
+        const updateData = {}
+        if (title) {
+            updateData.title = title;
+        }
+        if (description) {
+            updateData.description = description;
+        }
+        if (src) {
+            updateData.image = src;
+        }
+        const updatedMemory = await Memory.findByIdAndUpdate(req.params.id, updateData, { new: true });
+        res.status(200).json({ message: "Memória atualizada com sucesso", memory: updatedMemory });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Erro ao atualizar memória", error });
+    }
+}
+
+const toggleFavorite = async (req, res) => {
+    try {
+        const memory = await Memory.findById(req.params.id);
+        if (!memory) {
+            return res.status(404).json({ message: "Memória não encontrada" });
+        }
+        memory.favorite = !memory.favorite;
+        await memory.save();
+
+        res.status(200).json({ message: "Memória adicionada aos favoritos", memory });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Erro ao adicionar a memória aos favoritos", error });
+
+    }
+}
+
+const addComment = async (req, res) => {
+    try {
+        const { name, text } = req.body;
+
+        if (!name || !text) {
+            return res.status(400).json({ message: "Nome e texto são obrigatórios" });
+        }
+        const comment = {
+            name,
+            text,
+        };
+
+        const memory = await Memory.findById(req.params.id);
+        if (!memory) {
+            return res.status(404).json({ message: "Memória não encontrada" });
+        }
+        memory.comments.push(comment);
+        await memory.save();
+
+        res.status(200).json({ message: "Comentário adicionado", memory });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Erro ao adicionar comentário", error });
 
     }
 }
 
 module.exports = {
-    createMemory, getMemories, getMemoryById, deleteMemory
+    createMemory, getMemories, getMemoryById, deleteMemory, updateMemory, toggleFavorite, addComment
 }

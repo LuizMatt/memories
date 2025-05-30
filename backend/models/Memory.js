@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const commentSchema = new Schema({
-    title: {
+    name: {
         type: String,
         required: true,
     },
-    description: {
+    text: {
         type: String,
         required: true,
     },
@@ -18,7 +18,7 @@ const MemorySchema = new Schema({
         type: String,
         required: true,
     },
-    src: {
+    image: {
         type: String,
         required: true,
     },
