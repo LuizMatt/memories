@@ -16,8 +16,8 @@ Este diretório contém o plano detalhado de implementação de cada etapa da re
 
 | Etapa | Arquivo | Foco Principal | Status |
 |---|---|---|---|
-| **Etapa 0** | [`etapa-0-preparacao.md`](./etapa-0-preparacao.md) | Preparação do repositório, bootstrap do projeto Spring Boot 4.1.x (Java 21, Maven Wrapper) e `.gitignore` | 🔄 Em andamento |
-| **Etapa 1** | [`etapa-1-esqueleto-e-docker.md`](./etapa-1-esqueleto-e-docker.md) | `compose.yaml` (Postgres 17), profiles (`dev`/`test`/`prod`), Flyway `V1`, Actuator Health e Testcontainers base | ⏳ Pendente |
+| **Etapa 0** | [`etapa-0-preparacao.md`](./etapa-0-preparacao.md) | Preparação do repositório, bootstrap do projeto Spring Boot 4.1.x (Java 21, Maven Wrapper) e `.gitignore` | ✅ Concluída |
+| **Etapa 1** | [`etapa-1-esqueleto-e-docker.md`](./etapa-1-esqueleto-e-docker.md) | `compose.yaml` (Postgres 17), profiles (`dev`/`test`/`prod`), Flyway `V1`, Actuator Health e Testcontainers base | ⏭️ Próxima |
 | **Etapa 2** | [`etapa-2-crud-memory.md`](./etapa-2-crud-memory.md) | CRUD de `Memory` (sem upload real ainda), paginação (`PageResponse`), allowlist de `sort`, validação e `GlobalExceptionHandler` (`ProblemDetail`) | ⏳ Pendente |
 | **Etapa 3** | [`etapa-3-upload-imagem.md`](./etapa-3-upload-imagem.md) | `ImageStorage`, `LocalImageStorage`, `ImageValidator` (magic bytes, 5 MB), endpoints de imagem/arquivos e consistência transacional (compensação + `afterCommit`) | ⏳ Pendente |
 | **Etapa 4** | [`etapa-4-comentarios-e-favoritos.md`](./etapa-4-comentarios-e-favoritos.md) | Módulo `comment/` paginado, `PUT`/`DELETE /favorite` idempotentes e projeção de `commentCount` em query única (sem N+1) | ⏳ Pendente |
