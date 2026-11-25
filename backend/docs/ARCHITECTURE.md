@@ -609,9 +609,9 @@ Campos:
 Cada etapa é entregável sozinha e termina com `./mvnw verify` verde. Seguir a ordem.
 
 ### Etapa 0: Preparação
-- [ ] Mover `backend/` atual para `backend-legacy/`
-- [ ] Gerar projeto em `backend/` (Initializr: Maven, Java 21, Boot 4.1.x, dependências da seção 3)
-- [ ] `.gitignore` (target, `.env`, uploads, IDE)
+- [x] Mover `backend/` atual para `backend-legacy/`
+- [x] Gerar projeto em `backend/` (Initializr: Maven, Java 21, Boot 4.1.x, dependências da seção 3)
+- [x] `.gitignore` (target, `.env`, uploads, IDE)
 
 ### Etapa 1: Esqueleto + Docker
 - [ ] `compose.yaml` com Postgres e healthcheck

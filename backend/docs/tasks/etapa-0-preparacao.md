@@ -15,50 +15,47 @@ Organizar a estrutura física do repositório separando o backend Node legado (`
 - [x] Criar estrutura `backend/docs/tasks/` com o planejamento de todas as etapas
 
 ### Task 0.2: Gerar estrutura base do projeto Spring Boot em `backend/`
-**Arquivos a criar:**
+**Arquivos criados:**
 - `backend/pom.xml`
-- `backend/mvnw` e `backend/mvnw.cmd`
+- `backend/mvnw`, `backend/mvnw.cmd` e `backend/.gitattributes`
 - `backend/.mvn/wrapper/maven-wrapper.properties`
 - `backend/src/main/java/com/luizmatt/memories/MemoriesApplication.java`
 - `backend/src/main/resources/application.yml`
-- `backend/src/test/java/com/luizmatt/memories/MemoriesApplicationTests.java`
+- `backend/src/main/resources/db/migration/.gitkeep`
 
 **Checklist de implementação:**
-- [ ] Configurar `pom.xml` com:
+- [x] Configurar `pom.xml` com:
   - Java 21 (`<java.version>21</java.version>`)
-  - Spring Boot 4.1.x parent (ou versão estável mais recente disponível no Maven Central compatível com a especificação; validar resolução do Maven)
-  - Dependências principais:
-    - `spring-boot-starter-web` (ou starter web correspondente no Boot 4)
+  - `spring-boot-starter-parent` versão `4.1.3`
+  - Starters modularizados do Spring Boot 4.1:
+    - `spring-boot-starter-webmvc`
     - `spring-boot-starter-validation`
     - `spring-boot-starter-data-jpa`
+    - `spring-boot-starter-flyway` + `org.flywaydb:flyway-database-postgresql`
     - `spring-boot-starter-actuator`
-    - `org.flywaydb:flyway-core` + `org.flywaydb:flyway-database-postgresql`
     - `org.postgresql:postgresql` (runtime)
-    - `spring-boot-docker-compose` (developmentOnly / optional)
-  - Dependências de teste:
-    - `spring-boot-starter-test`
-    - `spring-boot-testcontainers`
-    - `org.testcontainers:postgresql`
-    - `org.testcontainers:junit-jupiter`
+    - `spring-boot-docker-compose` (runtime / optional)
+  - Starters de teste modularizados do Spring Boot 4.1:
+    - `spring-boot-starter-webmvc-test`, `spring-boot-starter-validation-test`, `spring-boot-starter-data-jpa-test`, `spring-boot-starter-flyway-test`, `spring-boot-starter-actuator-test`
+    - `spring-boot-testcontainers`, `org.testcontainers:testcontainers-junit-jupiter`, `org.testcontainers:testcontainers-postgresql`
   - Plugins:
     - `spring-boot-maven-plugin`
-    - `maven-surefire-plugin` (para testes unitários `*Test.java` em `./mvnw test`)
-    - `maven-failsafe-plugin` (para testes de integração `*IT.java` em `./mvnw verify`)
-- [ ] Incluir Maven Wrapper (`mvnw`, `mvnw.cmd`, `.mvn/`)
-- [ ] Criar classe principal `com.luizmatt.memories.MemoriesApplication`
+    - `maven-failsafe-plugin` (executa `*IT.java` em `./mvnw verify`, enquanto o `surefire` padrão executa `*Test.java` em `./mvnw test`)
+- [x] Incluir Maven Wrapper (`mvnw`, `mvnw.cmd`, `.mvn/`)
+- [x] Criar classe principal `com.luizmatt.memories.MemoriesApplication`
 
 ### Task 0.3: Configurar `.gitignore` do backend
 **Arquivo:** `backend/.gitignore`
-- [ ] Ignorar artefatos de build Maven (`target/`, `*.log`)
-- [ ] Ignorar arquivos de ambiente e segredos (`.env`, `.env.*`, `application-local.yml`)
-- [ ] Ignorar diretório local de uploads de desenvolvimento (`uploads/`, `data/`)
-- [ ] Ignorar arquivos de IDEs (`.idea/`, `*.iml`, `.vscode/`, `.settings/`, `.classpath`, `.project`)
+- [x] Ignorar artefatos de build Maven (`target/`, `*.log`)
+- [x] Ignorar arquivos de ambiente e segredos (`.env`, `.env.*`, `application-local.yml`)
+- [x] Ignorar diretório local de uploads de desenvolvimento (`uploads/`, `data/`)
+- [x] Ignorar arquivos de IDEs (`.idea/`, `*.iml`, `.vscode/`, `.settings/`, `.classpath`, `.project`)
 
 ---
 
 ## Verificação e Critérios de Aceite (Definition of Done)
 
-- [ ] `backend-legacy/` contém todo o código Node/Express antigo intocado
-- [ ] `backend/docs/` contém `CLAUDE.md`, `ARCHITECTURE.md` e `tasks/`
-- [ ] `./mvnw --version` e `./mvnw test-compile` executam com sucesso a partir de `backend/`
-- [ ] Commit realizado: `chore: initialize spring boot project structure and move legacy backend`
+- [x] `backend-legacy/` contém todo o código Node/Express antigo intocado
+- [x] `backend/docs/` contém `CLAUDE.md`, `ARCHITECTURE.md` e `tasks/`
+- [x] `./mvnw verify` executado com sucesso (`BUILD SUCCESS`) a partir de `backend/`
+- [x] Commit: `chore: bootstrap spring boot 4.1 maven project`
